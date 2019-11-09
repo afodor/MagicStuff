@@ -14,7 +14,7 @@ public class RankedDraftWalk
 	private final static int[] RANK_SIZES = {5,5,5};
 	
 	// 0 == gold, 1 == plat, 2 == Diamond
-	private static final int START_RANK = 2;	
+	private static final int START_RANK = 1;	
 	
 	private static final int NUM_PERMUTATION = 100000;
 	
@@ -133,7 +133,7 @@ public class RankedDraftWalk
 			writer.write(d + "\t" + new Avevar(h.numGamesToMythic).getAve() + "\t" + 
 					new Avevar(h.numGamesToMythic).getSD() + "\t" + 
 					new Avevar(h.numDrafsToMythic).getAve() + "\t" + 
-					new Avevar(h.numGamesToMythic).getSD() + "\n"	);
+					new Avevar(h.numDrafsToMythic).getSD() + "\n"	);
 			
 			System.out.println(d);
 		}
