@@ -16,9 +16,9 @@ public class RankedDraftWalk
 	// 0 == gold, 1 == plat, 2 == Diamond
 	private static final int START_RANK = 2;	
 	
-	private static final int NUM_PERMUTATION = 1000;
+	private static final int NUM_PERMUTATION = 100000;
 	
-	private static Random random = new Random(24124);
+	private static Random random = new Random();
 	
 	private static class Holder
 	{
@@ -58,7 +58,7 @@ public class RankedDraftWalk
 					
 					currentWinsInLevel++;
 					
-					if( currentWinsInLevel > RANK_SIZES[currentRank] )
+					if( currentWinsInLevel >= RANK_SIZES[currentRank] )
 					{
 						currentWinsInLevel=0;
 						currentLevel--;
@@ -119,7 +119,7 @@ public class RankedDraftWalk
 	
 	public static void main(String[] args) throws Exception
 	{
-		double[] winRates = {0.48, 0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64};
+		double[] winRates = {0.48, 0.5,0.52,0.54,0.55, 0.56,0.58,0.6,0.62,0.64,0.65,0.70};
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 				"c:\\MagicStuff\\walks.txt")));
