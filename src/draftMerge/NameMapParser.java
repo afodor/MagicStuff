@@ -11,6 +11,9 @@ import java.util.List;
 
 public class NameMapParser
 {
+	private static File JSON_FILE = new File(
+			"C:\\mtgArenaTools\\MTG-Arena-Tool-master\\src\\resources\\database.json");
+	
 	public static void main(String[] args) throws Exception
 	{
 		HashMap<String, Integer> idMap = getIDMap();
@@ -43,7 +46,7 @@ public class NameMapParser
 		s= s.substring( s.indexOf("\"PickedCards\":[\"") + 15);
 		s = s.replace("]}}", "");
 		
-		System.out.println(s);
+		//System.out.println(s);
 		
 		String[] splits = s.split("\\,");
 		
@@ -88,7 +91,7 @@ public class NameMapParser
 		HashMap<Integer, Holder> map = new HashMap<>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(
-				"C:\\mtga_Arena_tool\\ranks.txt"));
+				"C:\\magicStuff\\ranks.txt" ));
 		
 		reader.readLine();
 		
@@ -117,8 +120,8 @@ public class NameMapParser
 	{
 		HashMap<String, Integer> map = new HashMap<>();
 		
-		BufferedReader reader =new BufferedReader(new FileReader(new File(
-				"C:\\mtga_Arena_tool\\MTG-Arena-Tool-master\\src\\resources\\database.json")));
+		BufferedReader reader =new BufferedReader(new FileReader(
+				JSON_FILE ));
 		
 		String aString = reader.readLine();
 		
