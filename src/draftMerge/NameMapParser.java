@@ -27,8 +27,35 @@ public class NameMapParser
 			System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
 		}
 		
+		List<Integer> pickedCards =getPickedCards(testString);
+		
+		for( Integer i : pickedCards)
+		{
+			Holder h = holderMap.get(i);
+			System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
+		}
+		
 	}
 	
+	private static List<Integer> getPickedCards(String s )
+	{
+		List<Integer> list = new ArrayList<>();
+		s= s.substring( s.indexOf("\"PickedCards\":[\"") + 15);
+		s = s.replace("]}}", "");
+		
+		System.out.println(s);
+		
+		String[] splits = s.split("\\,");
+		
+		for( int x=0; x < splits.length; x++)
+		{
+			Integer i = Integer.parseInt(splits[x].replaceAll("\"", ""));
+			list.add(i);
+		}
+		
+		//System.out.println(s);
+		return list;
+	}
 	
 	private static List<Integer> getCardsInPack(String s)
 	{
