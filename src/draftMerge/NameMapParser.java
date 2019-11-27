@@ -37,10 +37,10 @@ public class NameMapParser
 		for( int x=1; x < splits.length; x++)
 		{
 			//System.out.println(splits[x]);
-			int startPos = splits[x].indexOf(",") ;
-			Integer key = Integer.parseInt(splits[x].substring(1,startPos ));
-			int endPos = splits[x].indexOf( "\"name\"");
-			String val =splits[x].substring( endPos); 
+
+			Integer key = Integer.parseInt(splits[x].substring(1,splits[x].indexOf(",") ));
+			int endPos = splits[x].indexOf( "\"set\"");
+			String val =splits[x].substring(splits[x].indexOf(",")+8, endPos-2).replaceAll("\"", ""); 
 			map.put(key,val);
 		}
 		
