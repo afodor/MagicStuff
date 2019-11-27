@@ -14,29 +14,62 @@ public class NameMapParser
 	private static File JSON_FILE = new File(
 			"C:\\mtgArenaTools\\MTG-Arena-Tool-master\\src\\resources\\database.json");
 	
+	private static File LOG_FILE = new File(
+			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs\\UTC_Log - 11-27-2019 03.00.18.log");
+	
+	private static String DRAFT_ID = "3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
+	
+	public static List<String> getDraftLines() throws Exception
+	{
+		List<String> list = new ArrayList<>();
+		
+		BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE));
+		
+		for(String s= reader.readLine(); s != null; s = reader.readLine())
+		{
+			if( s.indexOf(DRAFT_ID) != - 1 && s.indexOf("PickNumber") != -1)
+				list.add(s);
+		}
+		
+		reader.close();
+		return list;
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		HashMap<String, Integer> idMap = getIDMap();
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
 		
+		List<String> draftLines = getDraftLines();
+		
+		for(String s : draftLines)
+		{
+			//System.out.println("LINE " + s);
+			List<Integer> inPack =  getCardsInPack(s);
+			
+			for( Integer i : inPack)
+			{
+				Holder h = holderMap.get(i);
+				System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
+			}
+			
+			/*
+			List<Integer> pickedCards =getPickedCards(s);
+			
+			for( Integer i : pickedCards)
+			{
+				Holder h = holderMap.get(i);
+				System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
+			}
+			*/
+		}
+		
+		/*
 		String testString = 
 				"UTC_Log - 11-21-2019 19.15.35.log:[6531] [UnityCrossThreadLogger]<== Draft.DraftStatus {\"id\":90,\"payload\":{\"DraftId\":\"3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft\",\"DraftStatus\":\"Draft.PickNext\",\"PackNumber\":0,\"PickNumber\":3,\"DraftPack\":[\"70395\",\"70311\",\"70172\",\"70281\",\"70219\",\"70325\",\"70368\",\"70181\",\"70293\",\"70320\",\"70224\"],\"PickedCards\":[\"70173\",\"70254\",\"70237\"]}}";
 		
-		List<Integer> inPack =  getCardsInPack(testString);
 		
-		for( Integer i : inPack)
-		{
-			Holder h = holderMap.get(i);
-			System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
-		}
-		
-		List<Integer> pickedCards =getPickedCards(testString);
-		
-		for( Integer i : pickedCards)
-		{
-			Holder h = holderMap.get(i);
-			System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
-		}
+		*/
 		
 	}
 	
