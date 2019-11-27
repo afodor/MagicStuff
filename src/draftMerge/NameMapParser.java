@@ -35,6 +35,59 @@ public class NameMapParser
 		return list;
 	}
 	
+	private static void writeSummaryFile(List<String> draftLines,
+			HashMap<Integer, Holder> holderMap) throws Exception
+	{
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
+			"c:\\magicStuff\\aDraft_Nov27.txt"	)));
+		
+		int pack =1;
+		int pick =1;
+		
+		for(String s : draftLines)
+		{
+			//System.out.println("LINE " + s);
+			
+			if( pack <3 || pick < 14)
+			{
+				List<Integer> inPack =  getCardsInPack(s);
+				
+				writer.write("pack " + pack + " pick " + pick + "\n");
+				
+				for( Integer i : inPack)
+				{
+					Holder h = holderMap.get(i);
+					writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + h.avgTakenAt + "\n");
+				}
+				
+				/*
+				List<Integer> pickedCards =getPickedCards(s);
+				
+				for( Integer i : pickedCards)
+				{
+					Holder h = holderMap.get(i);
+					System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
+				}
+				*/
+				
+				System.out.println( "Pack " + pack + " Pick " + pick );
+				
+				pick++;
+				
+				if(pick == 15)
+				{
+					pick =1;
+					pack++;
+				}
+				
+				writer.write("\n\n");
+			}
+			
+		}
+		
+		writer.flush();  writer.close();
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		HashMap<String, Integer> idMap = getIDMap();
@@ -42,28 +95,7 @@ public class NameMapParser
 		
 		List<String> draftLines = getDraftLines();
 		
-		
-		for(String s : draftLines)
-		{
-			//System.out.println("LINE " + s);
-			List<Integer> inPack =  getCardsInPack(s);
-			
-			for( Integer i : inPack)
-			{
-				Holder h = holderMap.get(i);
-				System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
-			}
-			
-			/*
-			List<Integer> pickedCards =getPickedCards(s);
-			
-			for( Integer i : pickedCards)
-			{
-				Holder h = holderMap.get(i);
-				System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
-			}
-			*/
-		}
+		writeSummaryFile(draftLines, holderMap);
 		
 		/*
 		String testString = 
@@ -116,6 +148,7 @@ public class NameMapParser
 	private static class Holder
 	{
 		String cardName;
+		String color;
 		double avgSeenAt;
 		double avgTakenAt;
 	}
@@ -143,6 +176,7 @@ public class NameMapParser
 			h.cardName =key;
 			h.avgSeenAt = Double.parseDouble(splits[4].replaceAll("\"", ""));
 			h.avgTakenAt = Double.parseDouble(splits[6].replaceAll("\"", ""));
+			h.color = splits[1].replaceAll("\"", "");
 			map.put(i, h);
 		}
 		
