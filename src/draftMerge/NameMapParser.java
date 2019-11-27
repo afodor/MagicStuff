@@ -42,6 +42,7 @@ public class NameMapParser
 		
 		List<String> draftLines = getDraftLines();
 		
+		
 		for(String s : draftLines)
 		{
 			//System.out.println("LINE " + s);
