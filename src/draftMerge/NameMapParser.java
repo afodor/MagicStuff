@@ -15,7 +15,7 @@ public class NameMapParser
 			"C:\\mtgArenaTools\\MTG-Arena-Tool-master\\src\\resources\\database.json");
 	
 	private static File LOG_FILE = new File(
-			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs\\UTC_Log - 11-27-2019 03.00.18.log");
+			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
 	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
 	
@@ -28,19 +28,30 @@ public class NameMapParser
 	
 	public static List<String> getDraftLines() throws Exception
 	{
+		String[] dir = LOG_FILE.list();
+		
 		List<String> list = new ArrayList<>();
 		
-		BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE));
 		
-		for(String s= reader.readLine(); s != null; s = reader.readLine())
+		for(String name : dir )
 		{
-			if( s.indexOf(DRAFT_ID) != -1 
-						&& s.indexOf("PackNumber") != -1 &&
-							getInitialNumber(s) >= 741608 ) 
-				list.add(s);
+			File inFile =new File(LOG_FILE.getAbsolutePath() + File.separator + name);
+			
+			BufferedReader reader = new BufferedReader(new FileReader(inFile));
+			
+			for(String s= reader.readLine(); s != null; s = reader.readLine())
+			{
+				if( s.indexOf(DRAFT_ID) != -1 
+							&& s.indexOf("PackNumber") != -1 
+								/*getInitialNumber(s) >= 741608*/ ) 
+					list.add(s);
+			}
+			
+			reader.close();
 		}
 		
-		reader.close();
+		
+		
 		return list;
 	}
 	
