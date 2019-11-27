@@ -17,7 +17,14 @@ public class NameMapParser
 	private static File LOG_FILE = new File(
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs\\UTC_Log - 11-27-2019 03.00.18.log");
 	
-	private static String DRAFT_ID = "3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
+	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
+	
+	private static int getInitialNumber(String s)
+	{
+		s = s.substring(1);
+		s = s.substring(0, s.indexOf("]"));
+		return Integer.parseInt(s);
+	}
 	
 	public static List<String> getDraftLines() throws Exception
 	{
@@ -27,7 +34,9 @@ public class NameMapParser
 		
 		for(String s= reader.readLine(); s != null; s = reader.readLine())
 		{
-			if( s.indexOf(DRAFT_ID) != - 1 && s.indexOf("PickNumber") != -1)
+			if( s.indexOf(DRAFT_ID) != -1 
+						&& s.indexOf("PackNumber") != -1 &&
+							getInitialNumber(s) >= 741608 ) 
 				list.add(s);
 		}
 		
@@ -39,7 +48,7 @@ public class NameMapParser
 			HashMap<Integer, Holder> holderMap) throws Exception
 	{
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-			"c:\\magicStuff\\aDraft_Nov27.txt"	)));
+			"c:\\magicStuff\\draft2_Nov28.txt"	)));
 		
 		int pack =1;
 		int pick =1;
@@ -54,6 +63,7 @@ public class NameMapParser
 				
 				writer.write("pack " + pack + " pick " + pick + "\n");
 				
+				writer.write("name\tcolor\tseenAt\tdiff\ttakenAt\n");
 				for( Integer i : inPack)
 				{
 					Holder h = holderMap.get(i);
@@ -94,6 +104,8 @@ public class NameMapParser
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
 		
 		List<String> draftLines = getDraftLines();
+		
+		System.out.println("Got list size " + draftLines.size());
 		
 		writeSummaryFile(draftLines, holderMap);
 		
