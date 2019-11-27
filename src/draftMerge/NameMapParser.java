@@ -57,7 +57,7 @@ public class NameMapParser
 				for( Integer i : inPack)
 				{
 					Holder h = holderMap.get(i);
-					writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + h.avgTakenAt + "\n");
+					writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
 				}
 				
 				/*
