@@ -5,7 +5,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class NameMapParser
 {
@@ -13,6 +15,37 @@ public class NameMapParser
 	{
 		HashMap<String, Integer> idMap = getIDMap();
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
+		
+		String testString = 
+				"UTC_Log - 11-21-2019 19.15.35.log:[6531] [UnityCrossThreadLogger]<== Draft.DraftStatus {\"id\":90,\"payload\":{\"DraftId\":\"3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft\",\"DraftStatus\":\"Draft.PickNext\",\"PackNumber\":0,\"PickNumber\":3,\"DraftPack\":[\"70395\",\"70311\",\"70172\",\"70281\",\"70219\",\"70325\",\"70368\",\"70181\",\"70293\",\"70320\",\"70224\"],\"PickedCards\":[\"70173\",\"70254\",\"70237\"]}}";
+		
+		List<Integer> inPack =  getCardsInPack(testString);
+		
+		for( Integer i : inPack)
+		{
+			Holder h = holderMap.get(i);
+			System.out.println(h.cardName + " " + h.avgSeenAt + " " + h.avgTakenAt);
+		}
+		
+	}
+	
+	
+	private static List<Integer> getCardsInPack(String s)
+	{
+		List<Integer> list = new ArrayList<>();
+		s= s.substring( s.indexOf("\"DraftPack\":[") + 13);
+		s=s.substring(0, s.indexOf("\"PickedCards\":")-2);
+		
+		String[] splits = s.split("\\,");
+		
+		for( int x=0; x < splits.length; x++)
+		{
+			Integer i = Integer.parseInt(splits[x].replaceAll("\"", ""));
+			list.add(i);
+		}
+		
+		//System.out.println(s);
+		return list;
 	}
 	
 	
@@ -41,6 +74,12 @@ public class NameMapParser
 			
 			if( i == null)
 				System.out.println("Could not find " + splits[0]);
+			
+			Holder h = new Holder();
+			h.cardName =key;
+			h.avgSeenAt = Double.parseDouble(splits[4].replaceAll("\"", ""));
+			h.avgTakenAt = Double.parseDouble(splits[6].replaceAll("\"", ""));
+			map.put(i, h);
 		}
 		
 		
