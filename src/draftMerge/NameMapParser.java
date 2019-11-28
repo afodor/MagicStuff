@@ -59,7 +59,7 @@ public class NameMapParser
 			HashMap<Integer, Holder> holderMap) throws Exception
 	{
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-			"c:\\magicStuff\\draft2_Nov28.txt"	)));
+			"c:\\magicStuff\\draft3_Nov28.txt"	)));
 		
 		int pack =1;
 		int pick =1;
