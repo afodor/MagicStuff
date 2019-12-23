@@ -18,6 +18,7 @@ public class NameMapParser
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
 	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
+	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_M20_20191206:Draft";
 	
 	private static int getInitialNumber(String s)
 	{
@@ -66,7 +67,9 @@ public class NameMapParser
 		
 		for(String s : draftLines)
 		{
+			
 			//System.out.println("LINE " + s);
+			
 			
 			if( pack <3 || pick < 14)
 			{
@@ -77,11 +80,17 @@ public class NameMapParser
 				writer.write("name\tcolor\tseenAt\tdiff\ttakenAt\n");
 				for( Integer i : inPack)
 				{
+					//System.out.println(i);
 					Holder h = holderMap.get(i);
-					writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
+					
+					if( h!= null)
+						writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
+					else
+						System.out.println("Skipping " + i );
 				}
 				
 				/*
+				 * 
 				List<Integer> pickedCards =getPickedCards(s);
 				
 				for( Integer i : pickedCards)
@@ -112,6 +121,7 @@ public class NameMapParser
 	public static void main(String[] args) throws Exception
 	{
 		HashMap<String, Integer> idMap = getIDMap();
+	
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
 		
 		List<String> draftLines = getDraftLines();
@@ -178,6 +188,7 @@ public class NameMapParser
 	
 	public static HashMap<Integer, Holder> getHolderMap(HashMap<String, Integer> idMap ) throws Exception
 	{
+		
 		HashMap<Integer, Holder> map = new HashMap<>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(
@@ -186,9 +197,10 @@ public class NameMapParser
 		reader.readLine();
 		
 		for(String s = reader.readLine(); s != null; s= reader.readLine())
+			if( s.trim().length() > 0 )
 		{
 			String[] splits = s.split("\t");
-			
+			//System.out.println(s);
 			String key = splits[0].replaceAll("\"", "");
 			Integer i = idMap.get(key);
 			
