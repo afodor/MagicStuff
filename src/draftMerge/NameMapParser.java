@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -89,6 +90,8 @@ public class NameMapParser
 		
 		for(String s : draftLines)
 		{
+			List<Holder> outList = new ArrayList<>();
+			
 
 			int pack =getField(s, "PackNumber");
 			int pick =getField(s, "PickNumber");
@@ -111,7 +114,7 @@ public class NameMapParser
 					Holder h = holderMap.get(i);
 					
 					if( h!= null)
-						writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
+						outList.add(h);
 					else
 						System.out.println("Skipping " + i );
 				}
@@ -129,10 +132,15 @@ public class NameMapParser
 				
 				System.out.println( "Pack " + pack + " Pick " + pick );
 				
-				writer.write("\n\n");
 				inSet.add(key);
 			}
 			
+			Collections.sort(outList);
+			
+			for(Holder h : outList)
+				writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
+			
+			writer.write("\n\n");
 		}
 		
 		writer.flush();  writer.close();
@@ -198,12 +206,18 @@ public class NameMapParser
 	}
 	
 	
-	private static class Holder
+	private static class Holder implements Comparable<Holder>
 	{
 		String cardName;
 		String color;
 		double avgSeenAt;
 		double avgTakenAt;
+		
+		@Override
+		public int compareTo(Holder o)
+		{
+			return Double.compare(this.avgTakenAt, o.avgTakenAt);
+		}
 	}
 	
 	public static HashMap<Integer, Holder> getHolderMap(HashMap<String, Integer> idMap ) throws Exception
