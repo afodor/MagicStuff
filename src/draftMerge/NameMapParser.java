@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class NameMapParser
 {
@@ -17,7 +19,8 @@ public class NameMapParser
 	private static File LOG_FILE = new File(
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
-	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
+	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_WAR_20191220";
+	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
 	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_M20_20191206:Draft";
 	
 	private static int getInitialNumber(String s)
@@ -25,6 +28,26 @@ public class NameMapParser
 		s = s.substring(1);
 		s = s.substring(0, s.indexOf("]"));
 		return Integer.parseInt(s);
+	}
+	
+	private static int getField(String inString, String key) throws Exception
+	{
+		String[] splits = inString.split(",");
+		for(String s : splits)
+		{
+			s = s.replaceAll("\"", "");
+			
+			if( s.startsWith(key))
+			{
+				StringTokenizer sToken = new StringTokenizer(s,":");
+				
+				sToken.nextToken();
+				
+				return Integer.parseInt(sToken.nextToken()) + 1;
+			}
+		}
+		
+		throw new Exception("Could not find " + key +  " "  + inString);
 	}
 	
 	public static List<String> getDraftLines() throws Exception
@@ -62,15 +85,19 @@ public class NameMapParser
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 			"c:\\magicStuff\\draft3_Nov28.txt"	)));
 		
-		int pack =1;
-		int pick =1;
+		HashSet<String> inSet = new HashSet<>();
 		
 		for(String s : draftLines)
 		{
+
+			int pack =getField(s, "PackNumber");
+			int pick =getField(s, "PickNumber");
+			
+			String key = pack + "@" + pick;
 			
 			//System.out.println("LINE " + s);
 			
-			
+			if( ! inSet.contains(key))
 			if( pack <3 || pick < 14)
 			{
 				List<Integer> inPack =  getCardsInPack(s);
@@ -102,15 +129,8 @@ public class NameMapParser
 				
 				System.out.println( "Pack " + pack + " Pick " + pick );
 				
-				pick++;
-				
-				if(pick == 15)
-				{
-					pick =1;
-					pack++;
-				}
-				
 				writer.write("\n\n");
+				inSet.add(key);
 			}
 			
 		}
@@ -192,7 +212,7 @@ public class NameMapParser
 		HashMap<Integer, Holder> map = new HashMap<>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(
-				"C:\\magicStuff\\ranks.txt" ));
+				"C:\\magicStuff\\ranks_war.txt" ));
 		
 		reader.readLine();
 		
