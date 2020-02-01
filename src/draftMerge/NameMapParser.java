@@ -147,10 +147,7 @@ public class NameMapParser
 	public static void main(String[] args) throws Exception
 	{
 		HashMap<String, Integer> idMap = getIDMap();
-		
-		for(String s: idMap.keySet())
-			System.out.println(s+ " " + idMap.get(s));
-		
+				
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
 		
 		List<String> draftLines = getDraftLines();
