@@ -15,12 +15,13 @@ import java.util.StringTokenizer;
 public class NameMapParser
 {
 	private static File JSON_FILE = new File(
-			"C:\\mtgArenaTools\\MTG-Arena-Tool-master\\src\\resources\\database.json");
+			"C:\\mtgArenaTools\\MTG-Arena-Tool-3.0.5\\src\\resources\\database.json");
 	
 	private static File LOG_FILE = new File(
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
-	private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_WAR_20191220";
+	private static String DRAFT_ID ="QuickDraft_THB_20200131";
+	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_WAR_20191220";
 	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_ELD_20191011:Draft";
 	//private static String DRAFT_ID ="3EF1FFCA28D42BB0:QuickDraft_M20_20191206:Draft";
 	
@@ -226,7 +227,7 @@ public class NameMapParser
 		HashMap<Integer, Holder> map = new HashMap<>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(
-				"C:\\magicStuff\\ranks_war.txt" ));
+				"C:\\magicStuff\\ranks_TBD.txt" ));
 		
 		reader.readLine();
 		
