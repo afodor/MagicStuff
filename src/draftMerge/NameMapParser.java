@@ -14,9 +14,6 @@ import java.util.StringTokenizer;
 
 public class NameMapParser
 {
-	private static File JSON_FILE = new File(
-			"C:\\mtgArenaTools\\MTG-Arena-Tool-3.0.5\\src\\resources\\database.json");
-	
 	private static File LOG_FILE = new File(
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
@@ -81,9 +78,13 @@ public class NameMapParser
 		return list;
 	}
 	
-	private static void writeSummaryFile(List<String> draftLines,
-			HashMap<Integer, Holder> holderMap) throws Exception
+	private static void writeSummaryFile(List<String> draftLines) throws Exception
 	{
+		HashMap<Integer, Integer> idToTitleIDMap = IDtoNames.getTitleIDMap();
+		HashMap<Integer, String> titleToNameMap = IDtoNames.getIdToNameMap();
+		
+		HashMap<Integer, Holder> holderMap = new HashMap<>();
+		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 			"c:\\magicStuff\\draft3_Nov28.txt"	)));
 		
@@ -149,15 +150,12 @@ public class NameMapParser
 	
 	public static void main(String[] args) throws Exception
 	{
-		HashMap<String, Integer> idMap = getIDMap();
 	
-		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
-		
 		List<String> draftLines = getDraftLines();
 		
 		System.out.println("Got list size " + draftLines.size());
 		
-		writeSummaryFile(draftLines, holderMap);
+		writeSummaryFile(draftLines);
 		
 		/*
 		String testString = 
@@ -250,30 +248,7 @@ public class NameMapParser
 			map.put(i, h);
 		}
 		
-		
-		return map;
-	}
-	
-	public static HashMap<String, Integer> getIDMap() throws Exception
-	{
-		HashMap<String, Integer> map = new HashMap<>();
-		
-		BufferedReader reader =new BufferedReader(new FileReader(
-				JSON_FILE ));
-		
-		String aString = reader.readLine();
-		
-		String[] splits = aString.split("\"id\"");
-		
-		for( int x=1; x < splits.length; x++)
-		{
-			//System.out.println(splits[x]);
-
-			Integer key = Integer.parseInt(splits[x].substring(1,splits[x].indexOf(",") ));
-			int endPos = splits[x].indexOf( "\"set\"");
-			String val =splits[x].substring(splits[x].indexOf(",")+8, endPos-2).replaceAll("\"", ""); 
-			map.put(val,key);
-		}
+		reader.close();
 		
 		return map;
 	}
