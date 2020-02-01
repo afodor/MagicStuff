@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class NameMapParser
-{
+{	
 	private static File LOG_FILE = new File(
 			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Logs\\Logs");
 	
@@ -78,13 +78,9 @@ public class NameMapParser
 		return list;
 	}
 	
-	private static void writeSummaryFile(List<String> draftLines) throws Exception
+	private static void writeSummaryFile(List<String> draftLines,
+			HashMap<Integer, Holder> holderMap) throws Exception
 	{
-		HashMap<Integer, Integer> idToTitleIDMap = IDtoNames.getTitleIDMap();
-		HashMap<Integer, String> titleToNameMap = IDtoNames.getIdToNameMap();
-		
-		HashMap<Integer, Holder> holderMap = new HashMap<>();
-		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 			"c:\\magicStuff\\draft3_Nov28.txt"	)));
 		
@@ -150,12 +146,18 @@ public class NameMapParser
 	
 	public static void main(String[] args) throws Exception
 	{
-	
+		HashMap<String, Integer> idMap = getIDMap();
+		
+		for(String s: idMap.keySet())
+			System.out.println(s+ " " + idMap.get(s));
+		
+		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
+		
 		List<String> draftLines = getDraftLines();
 		
 		System.out.println("Got list size " + draftLines.size());
 		
-		writeSummaryFile(draftLines);
+		writeSummaryFile(draftLines, holderMap);
 		
 		/*
 		String testString = 
@@ -249,6 +251,26 @@ public class NameMapParser
 		}
 		
 		reader.close();
+		
+		return map;
+	}
+	
+	public static HashMap<String, Integer> getIDMap() throws Exception
+	{
+		HashMap<Integer, Integer> grpToTitleMap = IDtoNames.getTitleIDMap();
+		HashMap<Integer,String> titleToString = IDtoNames.getIdToNameMap();
+		
+		HashMap<String, Integer> map = new HashMap<>();
+		
+		for(Integer grpID : grpToTitleMap.keySet())
+		{
+			Integer titleID = grpToTitleMap.get(grpID);
+			
+			String aString = titleToString.get(titleID);
+			
+			if( aString != null)
+				map.put(aString, grpID);
+		}
 		
 		return map;
 	}

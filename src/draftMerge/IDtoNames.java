@@ -31,7 +31,7 @@ public class IDtoNames
 				if( ! map.containsKey(anInt))
 				{
 					String text = reader.readLine().replaceAll("\"", "").trim();
-					text = text.replace("text:", "");
+					text = text.replace("text:", "").trim();
 					map.put(anInt, text);
 					
 				}
