@@ -81,6 +81,15 @@ public class NameMapParser
 	private static void writeSummaryFile(List<String> draftLines,
 			HashMap<Integer, Holder> holderMap) throws Exception
 	{
+		for(String s : draftLines)
+		{
+
+			int pack =getField(s, "PackNumber");
+			int pick =getField(s, "PickNumber");
+
+			System.out.println( "Pack " + pack + " Pick " + pick );
+		}
+		
 		Collections.reverse(draftLines);
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
@@ -130,7 +139,6 @@ public class NameMapParser
 				}
 				*/
 				
-				System.out.println( "Pack " + pack + " Pick " + pick );
 				
 				inSet.add(key);
 			}
