@@ -81,6 +81,8 @@ public class NameMapParser
 	private static void writeSummaryFile(List<String> draftLines,
 			HashMap<Integer, Holder> holderMap) throws Exception
 	{
+		Collections.reverse(draftLines);
+		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 			"c:\\magicStuff\\draft3_Nov28.txt"	)));
 		
@@ -138,7 +140,7 @@ public class NameMapParser
 			for(Holder h : outList)
 				writer.write(h.cardName + "\t" + h.color + "\t" +  h.avgSeenAt + "\t" + (h.avgSeenAt-pick ) + "\t" +  h.avgTakenAt + "\n");
 			
-			writer.write("\n\n");
+			writer.write("\n");
 		}
 		
 		writer.flush();  writer.close();
