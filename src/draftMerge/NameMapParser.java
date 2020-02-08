@@ -78,9 +78,12 @@ public class NameMapParser
 		return list;
 	}
 	
-	private static void writeSummaryFile(List<String> draftLines,
+	private static String writeSummaryFile(List<String> draftLines,
 			HashMap<Integer, Holder> holderMap) throws Exception
 	{
+		
+		String returnVal = null;
+		
 		for(String s : draftLines)
 		{
 
@@ -88,6 +91,7 @@ public class NameMapParser
 			int pick =getField(s, "PickNumber");
 
 			System.out.println( "Pack " + pack + " Pick " + pick );
+			returnVal =  "Pack " + pack + " Pick " + pick ;
 		}
 		
 		Collections.reverse(draftLines);
@@ -152,10 +156,29 @@ public class NameMapParser
 		}
 		
 		writer.flush();  writer.close();
+		return returnVal;
 	}
+	
 	
 	public static void main(String[] args) throws Exception
 	{
+		File lastFile = new File("C:\\magicStuff\\lastPack.txt");
+		String lastPick = null;
+		String aPick = null;
+		
+		if(lastFile.exists())
+		{
+			BufferedReader reader = new BufferedReader(new FileReader(lastFile));
+			lastPick = reader.readLine();
+			reader.close();
+		}
+		
+		do  // repeat until log file has changed
+		{
+			
+		if( lastPick != null )
+			System.out.println("Looking for a change from " + lastPick);
+		
 		HashMap<String, Integer> idMap = getIDMap();
 				
 		HashMap<Integer, Holder> holderMap = getHolderMap(idMap);
@@ -164,7 +187,21 @@ public class NameMapParser
 		
 		System.out.println("Got list size " + draftLines.size());
 		
-		writeSummaryFile(draftLines, holderMap);
+		aPick= writeSummaryFile(draftLines, holderMap);
+		
+		Thread.sleep(500);
+		
+		}while( aPick != null && lastPick != null && aPick.equals(lastPick));
+		
+		if( aPick != null)
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter(lastFile));
+			writer.write(aPick + "\n");
+			writer.flush();  writer.close();
+		}
+		
+		
+		
 		
 		/*
 		String testString = 
