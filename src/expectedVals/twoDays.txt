@@ -46,4 +46,53 @@ plot(winPerc, log10(winnings))
 lines(c(.01,.9), c( log10(20),log10(20)), col="red" )
 
 myFrame <- data.frame( winPerc, winnings )
-edit(myFrame) 
+#edit(myFrame) 
+
+#simulate 
+w <- 0.5
+numSims <- 100000
+
+winnings <- vector()
+
+for( i in 1:numSims )
+{
+	#day 1
+	numLosses =0
+	numWins =0
+	
+	while( numWins <7 & numLosses < 2)
+	{
+		if( w >= runif(1) ) 
+		{
+			numWins = numWins +1
+		}
+		else
+		{
+			numLosses = numLosses + 1
+		}
+	}
+	
+	#day 2
+	numLosses =0
+	if( numWins == 7 ) 
+	{
+		while( numWins <14 & numLosses < 1)
+		{
+			if( w>= runif(1) ) 
+			{
+				numWins = numWins +1
+			}
+			else
+			{
+				numLosses = numLosses + 1
+			}
+		}
+	}
+	
+	winnings[i] = prizes[numWins+1]
+}
+
+mean(winnings)
+sd(winnings)
+
+	
