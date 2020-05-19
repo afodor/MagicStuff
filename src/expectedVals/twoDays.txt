@@ -9,19 +9,18 @@ winPerc <- seq(.1,.9,.01)
 
 winnings <- vector()
 
-# day 1
 index <- 1
 for( w in winPerc ) 
 {
 	probs <- vector()
-	
+
+	# day 1	
 	for( i in 0:6)
 	{
 		probs[i+1] = dnbinom( i, 2, 1-w ) 	
 	}
 	
-	# we get to day 2
-	
+	# prob we get to day 2
 	probDay2 <- 1- sum(probs)
 	
 	for( i in 7:13)
