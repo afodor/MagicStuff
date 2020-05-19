@@ -42,14 +42,14 @@ for( w in winPerc )
 	index = index + 1
 }
 
-plot(winPerc, log10(winnings))
+plot(winPerc, log10(winnings),xlab="Win percenage across both days", ylab="log10($ expected val)")
 lines(c(.01,.9), c( log10(20),log10(20)), col="red" )
 
 myFrame <- data.frame( winPerc, winnings )
 #edit(myFrame) 
 
 #simulate 
-w <- 0.5
+w <- 0.63
 numSims <- 100000
 
 winnings <- vector()
