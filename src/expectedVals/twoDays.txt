@@ -1,0 +1,49 @@
+rm(list=ls())
+
+numWins <- c(1:14)
+
+prizes <- c(0,0,400/200,800/200,1200/200,1600/200,2000/200, 2000/200, 2000/200+2000/200, 2000/200 + 4000/200,
+					2000/200 + 6000/200, 2000/200 + 10000/200, 2000/200+20000/200, 2000/200 + 1000, 2000/200 + 2000) 
+
+winPerc <- seq(.1,.9,.01)
+
+winnings <- vector()
+
+# day 1
+index <- 1
+for( w in winPerc ) 
+{
+	probs <- vector()
+	
+	for( i in 0:6)
+	{
+		probs[i+1] = dnbinom( i, 2, 1-w ) 	
+	}
+	
+	# we get to day 2
+	
+	probDay2 <- 1- sum(probs)
+	
+	for( i in 7:13)
+	{
+		probs[i+1] = probDay2 * dnbinom(i-7,1,1-w) 
+	}
+	
+	probs[15] <- 1- sum(probs)
+	
+	val = 0
+	
+	for( i in 0:14 )
+	{
+		val = val + probs[i+1] * prizes[i+1] 
+	}
+	
+	winnings[index] = val
+	index = index + 1
+}
+
+plot(winPerc, log10(winnings))
+lines(c(.01,.9), c( log10(20),log10(20)), col="red" )
+
+myFrame <- data.frame( winPerc, winnings )
+edit(myFrame) 

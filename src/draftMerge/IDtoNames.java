@@ -13,7 +13,7 @@ public class IDtoNames
 		HashMap<Integer,String> map = new LinkedHashMap<Integer, String>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(new File( 
-			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Downloads\\Data\\data_loc_3b2cf3c5472bf8418661b4a12155d3e8.mtga"	)));
+			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Downloads\\Data\\data_loc_026879ae4a514388f7ec779898b50255.mtga"	)));
 		
 		String s= reader.readLine();
 		
@@ -50,7 +50,7 @@ public class IDtoNames
 		HashMap<Integer,Integer> map = new LinkedHashMap<Integer, Integer>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(new File( 
-			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Downloads\\Data\\data_cards_4dcb7721e148573e66a4dcb5ec4e871e.mtga"	)));
+			"C:\\Program Files (x86)\\Wizards of the Coast\\MTGA\\MTGA_Data\\Downloads\\Data\\data_cards_f4f7518d1f84450287fe1bf15402e4e5.mtga"	)));
 		
 		String s= reader.readLine();
 		
