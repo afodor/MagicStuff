@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class WhenManaScrew
 {
-	
 	private static final Random r = new Random();
 	public static void main(String[] args)
 	{
