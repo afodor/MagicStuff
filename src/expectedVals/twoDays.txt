@@ -94,4 +94,3 @@ for( i in 1:numSims )
 mean(winnings)
 sd(winnings)
 
-	
