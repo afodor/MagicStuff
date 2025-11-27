@@ -1,0 +1,29 @@
+
+rm(list=ls())
+
+probs <- c()
+
+wins <- 0:6
+probs <- 0
+p <- 0.5
+
+for( w in wins ) 
+{
+	probs[w+1] <-dnbinom(w, size = 3, prob = p) 
+}
+
+probs[8] <- 1- sum(probs)
+
+gems <- c(50,100,250,1000,1400,1600,1800,2200)
+
+expectedVal <- 0
+for( i in 1:8 )
+{
+	expectedVal = expectedVal + probs[i] * gems[i]
+	print( paste(probs[i], gems[i],   probs[i] * gems[i]))
+}
+
+expectedVal
+
+
+
